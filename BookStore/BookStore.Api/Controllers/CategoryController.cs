@@ -51,6 +51,22 @@ namespace BookStore.Api.Controllers
             return Ok(categories);
         }
 
+        [Route("{id}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(CategoryModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BadRequestObjectResult),(int)HttpStatusCode.BadRequest)]
+        public IActionResult GetCategory(int id)
+        {
+            var category = _repository.GetCategory(id);
+
+            if(category == null)
+                return BadRequest();
+
+            CategoryModel categoryModel = new CategoryModel(category);
+
+            return Ok(categoryModel);
+        }
+
         [HttpPut]
         [Route("update")]
         [ProducesResponseType(typeof(CategoryModel), (int)HttpStatusCode.OK)]

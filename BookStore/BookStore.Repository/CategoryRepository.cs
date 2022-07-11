@@ -34,6 +34,11 @@ namespace BookStore.Repository
             };
         }
 
+        public Category GetCategory(int id)
+        {
+            return _context.Categories.FirstOrDefault(c => c.Id == id);
+        }
+
         public Category UpdateCategory(Category model)
         {
             var entry = _context.Categories.Update(model);

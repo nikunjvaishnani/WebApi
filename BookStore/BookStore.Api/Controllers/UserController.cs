@@ -3,6 +3,7 @@ using BookStore.Models.ViewModels;
 using BookStore.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Net;
 
 namespace BookStore.Api.Controllers
 {
@@ -14,6 +15,8 @@ namespace BookStore.Api.Controllers
 
         [HttpGet]
         [Route("GetUsers")]
+        [ProducesResponseType(typeof(ListResponse<UserModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), (int)HttpStatusCode.BadRequest)]
         public IActionResult GetUsers(int pageIndex = 1, int pageSize = 10, string keyword = "")
         {
             ListResponse<User> response = _repository.GetUsers(pageIndex, pageSize, keyword);
@@ -26,8 +29,24 @@ namespace BookStore.Api.Controllers
             return Ok(users);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(UserModel),(int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BadRequestObjectResult),(int)HttpStatusCode.BadRequest)]
+        public IActionResult GetUser(int id)
+        {
+            User user = _repository.GetUser(id);
+            if (user == null)
+                return BadRequest();
+
+            UserModel userModel = new UserModel(user);
+            return Ok(userModel);
+        }
+
         [HttpPut]
         [Route("update")]
+        [ProducesResponseType(typeof(User), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), (int)HttpStatusCode.BadRequest)]
         public IActionResult UpdateUser(int id,string firstname,string lastname,string email,string password,int roleid)
         {
             User user = new User()
@@ -51,6 +70,8 @@ namespace BookStore.Api.Controllers
 
         [HttpDelete]
         [Route("delete")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), (int)HttpStatusCode.BadRequest)]
         public IActionResult DeleteUser(int id)
         {
             if(id == 0)

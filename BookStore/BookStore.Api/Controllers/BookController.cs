@@ -57,6 +57,23 @@ namespace BookStore.Api.Controllers
             return Ok(listResponse);
         }
 
+        [HttpPost]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), (int)HttpStatusCode.BadRequest)]
+        public IActionResult GetBook(int id)
+        {
+            Book book = _repository.GetBook(id);
+
+            if(book == null)
+            {
+                return BadRequest();
+            }
+
+            BookModel bookModel = new BookModel(book);
+            return Ok(bookModel);
+        }
+
         [HttpPut]
         [Route("update")]
         [ProducesResponseType(typeof(BookModel),(int)HttpStatusCode.OK)]

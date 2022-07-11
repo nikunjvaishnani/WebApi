@@ -49,6 +49,21 @@ namespace BookStore.Api.Controllers
             return Ok(cartModel);
         }
 
+        [HttpPost]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BadRequestObjectResult), (int)HttpStatusCode.BadRequest)]
+        public IActionResult GetCart(int id)
+        {
+            Cart cart = _repository.GetCart(id);
+
+            if (cart == null)
+                return BadRequest();
+
+            CartModel model = new CartModel(cart);
+            return Ok(model);   
+        }
+
         [HttpPut]
         [Route("update")]
         [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]

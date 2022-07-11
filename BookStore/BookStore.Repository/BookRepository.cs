@@ -32,6 +32,11 @@ namespace BookStore.Repository
             return entry.Entity;
         }
 
+        public Book GetBook(int id)
+        {
+            return _context.Books.Where(b => b.BookId == id).FirstOrDefault();
+        }
+
         public Book UpdateBook(Book book)
         {
             var entry = _context.Books.Update(book);

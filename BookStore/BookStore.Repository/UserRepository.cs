@@ -30,6 +30,11 @@ namespace BookStore.Repository
             return _context.Users.ToList();
         }
 
+        public User GetUser(int id)
+        {
+            return _context.Users.FirstOrDefault(w => w.UserId == id);
+        }
+
         public User Login(LoginModel model)
         {
             return _context.Users.FirstOrDefault(a => a.Email.ToLower().Equals(model.Email.ToLower()) && a.Password.Equals(model.Password));

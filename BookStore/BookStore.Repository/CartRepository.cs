@@ -25,6 +25,11 @@ namespace BookStore.Repository
             return entry.Entity;
         }
 
+        public Cart GetCart(int id)
+        {
+            return _context.Carts.Where(c => c.CartId == id).FirstOrDefault();  
+        }
+
         public Cart UpdateCart(Cart cart)
         {
             var entry = _context.Carts.Update(cart);
